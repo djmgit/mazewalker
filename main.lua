@@ -76,18 +76,18 @@ function love.load()
     love.mouse.setRelativeMode(true)
 
     require "maze_generator"
+    require "path_finding"
+    require "utils"
+
 
     setup_world()
-
-    require "utils"
     require "player"
     require "weapon"
-    require "path_finding"
     require "object_renderer"
     require "path_finding"
     require "level_manager"
     load_wall_textures()
-    graph = get_graph()
+    
     require "sprite_objects"
     for _, candle_pos in ipairs(maze_holder.candles) do
         load_sprite("resources/sprites/static_sprites/candlebra.png", candle_pos[1]-0.5, candle_pos[2]-0.5, 0.7, 0.27, SPRITE_TYPE_STATIC)
@@ -120,6 +120,7 @@ function setup_world()
     FLAG_POS_MAP_Y = maze_holder.exit_pos[1] - 1
     tiles = get_tiles()
     map = get_map()
+    graph = get_graph()
 end
 
 
