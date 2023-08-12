@@ -1,4 +1,5 @@
 function love.load()
+    math.randomseed(os.time())
     WINDOW_WIDTH = 1600
     WINDOW_HEIGHT = 900
     MAZE_HEIGHT = 50

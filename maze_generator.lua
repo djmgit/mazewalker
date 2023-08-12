@@ -27,12 +27,10 @@ function __get_maze(width, height)
     for i=1, 20 do
         maze = generate_maze(width, height)
         if check_maze(maze.maze, width, height) then
-            print_maze(maze.maze, width, height)
             return maze
         end
     end
 
-    print_maze(maze.maze, width, height)
     return maze
 end
 
