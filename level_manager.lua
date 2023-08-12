@@ -14,6 +14,8 @@ function transition_level()
     FLAG_POS_MAP_X = -1
     FLAG_POS_MAP_Y = -1
     remove_all_sprites()
+    setup_world()
+    init_player()
 end
 
 function remove_all_sprites()

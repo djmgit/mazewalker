@@ -75,20 +75,34 @@ function love.load()
     sounds.player_pain = love.audio.newSource("resources/sounds/resources_sound_player_pain.wav", "static")
     love.mouse.setRelativeMode(true)
 
+    require "utils"
     require "maze_generator"
     require "path_finding"
-    require "utils"
-
+    require "weapon"
+    require "object_renderer"
+    load_wall_textures()
+    require "path_finding"
+    require "sprite_objects"
 
     setup_world()
     require "player"
-    require "weapon"
-    require "object_renderer"
-    require "path_finding"
+    init_player()
     require "level_manager"
-    load_wall_textures()
-    
-    require "sprite_objects"
+    require "mod"
+
+end
+
+function setup_world()
+    maze_holder = get_maze(MAZE_WIDTH, MAZE_HEIGHT)
+    mini_map = maze_holder.maze
+    PLAYER_START_X = maze_holder.entry_pos[2] - 1 + 0.5
+    PLAYER_START_Y = maze_holder.entry_pos[1] - 1 + 0.5
+    FLAG_POS_MAP_X = maze_holder.exit_pos[2] - 1
+    FLAG_POS_MAP_Y = maze_holder.exit_pos[1] - 1
+    tiles = get_tiles()
+    map = get_map()
+    graph = get_graph()
+
     for _, candle_pos in ipairs(maze_holder.candles) do
         load_sprite("resources/sprites/static_sprites/candlebra.png", candle_pos[1]-0.5, candle_pos[2]-0.5, 0.7, 0.27, SPRITE_TYPE_STATIC)
     end
@@ -107,20 +121,6 @@ function love.load()
                     "resources/sprites/npc/"..npc_type.."/walk")
     end
     load_weapon("resources/sprites/weapon/shotgun", 0.4, 0.15)
-    require "mod"
-
-end
-
-function setup_world()
-    maze_holder = get_maze(MAZE_WIDTH, MAZE_HEIGHT)
-    mini_map = maze_holder.maze
-    PLAYER_START_X = maze_holder.entry_pos[2] - 1 + 0.5
-    PLAYER_START_Y = maze_holder.entry_pos[1] - 1 + 0.5
-    FLAG_POS_MAP_X = maze_holder.exit_pos[2] - 1
-    FLAG_POS_MAP_Y = maze_holder.exit_pos[1] - 1
-    tiles = get_tiles()
-    map = get_map()
-    graph = get_graph()
 end
 
 
