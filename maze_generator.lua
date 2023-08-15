@@ -394,8 +394,8 @@ function generate_maze(width, height)
     end
 
     do_flood_fill(maze, width, height)
-    maze[entry_door[1]][entry_door[2]] = 5
-    maze[exit_door[1]][exit_door[2]] = 5
+    maze[entry_door[1]][entry_door[2]] = math.random(6, 10)
+    maze[exit_door[1]][exit_door[2]] = math.random(6, 10)
 
     local maze_holder = {}
     maze_holder.maze = pre_process_maze(maze, width, height)
@@ -436,7 +436,6 @@ function flood_fill(maze, width, height, start_pos, wall_type)
     table.insert(queue, start_pos)
 
     while #queue ~= 0 do
-        --print (#queue)
         local pos = table.remove(queue, 1)
         if maze[pos[1]][pos[2]] == wall then
             maze[pos[1]][pos[2]] = wall_type

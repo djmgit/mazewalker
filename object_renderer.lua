@@ -52,11 +52,9 @@ function  draw_background()
 end
 
 function load_wall_textures()
-    table.insert(wall_textures, love.graphics.newImage('resources/textures/1.png'))
-    table.insert(wall_textures, love.graphics.newImage('resources/textures/2.png'))
-    table.insert(wall_textures, love.graphics.newImage('resources/textures/3.png'))
-    table.insert(wall_textures, love.graphics.newImage('resources/textures/4.png'))
-    table.insert(wall_textures, love.graphics.newImage('resources/textures/5.png'))
+    for index = 1, 10 do
+        table.insert(wall_textures, love.graphics.newImage('resources/textures/'..index..'.png'))
+    end
     sky_texture = love.graphics.newImage('resources/textures/sky.png')
     blood_screen = love.graphics.newImage('resources/textures/blood_screen.png')
     for item=0, 10 do

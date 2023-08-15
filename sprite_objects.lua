@@ -273,7 +273,6 @@ end
 function check_npc_health(npc)
     if npc.health < 1 then
         enemies_killed = enemies_killed + 1
-        print (enemies_killed)
         npc.alive = false
         sounds.npc_death:play()
     end

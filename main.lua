@@ -2,8 +2,8 @@ function love.load()
     math.randomseed(os.time())
     WINDOW_WIDTH = 1600
     WINDOW_HEIGHT = 900
-    MAZE_HEIGHT = 50
-    MAZE_WIDTH = 50
+    MAZE_HEIGHT = 60
+    MAZE_WIDTH = 60
     HALF_WINDOW_WIDTH = math.floor(WINDOW_WIDTH / 2)
     HALF_WINDOW_HEIGHT = math.floor(WINDOW_HEIGHT / 2)
     WINDOW_SCALE = 100
@@ -111,16 +111,16 @@ function setup_world()
         local light_colors = {"green_torch", "red_torch"}
         load_sprite("resources/sprites/animated_sprites/"..light_colors[(index%2)+1], light_pos[1]-0.5, light_pos[2]-0.5, 0.7, 0.27, SPRITE_TYPE_ANIMATED, 0.125)
     end
-    for _, npc_pos in ipairs(maze_holder.npcs) do
-        local npc_types = {"soldier", "cyber_demon", "caco_demon"}
-        local npc_type = npc_types[math.random(1, #npc_types)]
-        load_sprite(nil, npc_pos[1]-0.5, npc_pos[2]-0.5, 0.6, 0.38, SPRITE_TYPE_NPC, 0.2, NPC_TYPE_SOLDIER,
-                    "resources/sprites/npc/"..npc_type.."/attack",
-                    "resources/sprites/npc/"..npc_type.."/death",
-                    "resources/sprites/npc/"..npc_type.."/idle",
-                    "resources/sprites/npc/"..npc_type.."/pain",
-                    "resources/sprites/npc/"..npc_type.."/walk")
-    end
+    --for _, npc_pos in ipairs(maze_holder.npcs) do
+        --local npc_types = {"soldier", "cyber_demon", "caco_demon"}
+        --local npc_type = npc_types[math.random(1, #npc_types)]
+        --load_sprite(nil, npc_pos[1]-0.5, npc_pos[2]-0.5, 0.6, 0.38, SPRITE_TYPE_NPC, 0.2, NPC_TYPE_SOLDIER,
+                    --"resources/sprites/npc/"..npc_type.."/attack",
+                    --"resources/sprites/npc/"..npc_type.."/death",
+                    --"resources/sprites/npc/"..npc_type.."/idle",
+                    --"resources/sprites/npc/"..npc_type.."/pain",
+                    --"resources/sprites/npc/"..npc_type.."/walk")
+    --end
     load_weapon("resources/sprites/weapon/shotgun", 0.4, 0.15)
 end
 
@@ -175,6 +175,9 @@ function love.update(dt)
         sprites_update(dt)
         weapon_update(dt)
         check_flag_reached()
+        print ()
+        local d = math.sqrt((player.pos_x - FLAG_POS_MAP_X)^2 + (player.pos_y - FLAG_POS_MAP_Y)^2)
+        print (d)
     end
 end
 
