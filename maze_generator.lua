@@ -172,6 +172,26 @@ function check_maze(maze, width, height)
     if free_ratio < 0.6 then
         return false
     end
+    local entry_door = {}
+    local exit_door = {}
+    for i=1, width do
+        if maze[2][i] == 0 then
+            entry_door = {1, i}
+            break
+        end
+    end
+
+    for i=width, 1, -1 do
+        if maze[height-1][i] == 0 then
+            exit_door = {height, i}
+            break
+        end
+    end
+
+    if (#entry_door == 0) or (#exit_door == 0) then
+        return false
+    end
+
     return true
 end
 
