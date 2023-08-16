@@ -6,7 +6,8 @@ flag = "f"
 door = "d"
 
 function get_maze(width, height)
-    local maze = __get_maze(width, height)
+    local maze_raw = __get_maze(width, height)
+    local maze = customise_maze(maze_raw, width, height)
     local occupied = {}
     occupied[pos_to_key(maze.entry_pos[1], maze.entry_pos[2])] = 1
     occupied[pos_to_key(maze.exit_pos[1], maze.exit_pos[2])] = 1
@@ -26,7 +27,7 @@ function __get_maze(width, height)
     local maze = nil
     for i=1, 20 do
         maze = generate_maze(width, height)
-        if check_maze(maze.maze, width, height) then
+        if check_maze(maze, width, height) then
             return maze
         end
     end
@@ -162,7 +163,7 @@ function check_maze(maze, width, height)
     local free_cells = 0
     for i=1, height do
         for j=1, width do
-            if maze[i][j] == 0 then
+            if maze[i][j] == cell then
                 free_cells = free_cells + 1
             end
         end
@@ -175,14 +176,14 @@ function check_maze(maze, width, height)
     local entry_door = {}
     local exit_door = {}
     for i=1, width do
-        if maze[2][i] == 0 then
+        if maze[2][i] == cell then
             entry_door = {1, i}
             break
         end
     end
 
     for i=width, 1, -1 do
-        if maze[height-1][i] == 0 then
+        if maze[height-1][i] == cell then
             exit_door = {height, i}
             break
         end
@@ -380,6 +381,21 @@ function generate_maze(width, height)
         end
     end
 
+    for i=1, height do
+        maze[i][1] = wall
+        maze[i][width] = wall
+    end
+
+    for i=1, width do
+        maze[1][i] = wall
+        maze[height][i] = wall
+    end
+
+    return maze
+
+end
+
+function customise_maze(maze, width, height)
     local entry_pos = {}
     local exit_pos = {}
     local entry_door = {}
@@ -403,16 +419,6 @@ function generate_maze(width, height)
         end
     end
 
-    for i=1, height do
-        maze[i][1] = wall
-        maze[i][width] = wall
-    end
-
-    for i=1, width do
-        maze[1][i] = wall
-        maze[height][i] = wall
-    end
-
     do_flood_fill(maze, width, height)
     maze[entry_door[1]][entry_door[2]] = math.random(6, 10)
     maze[exit_door[1]][exit_door[2]] = math.random(6, 10)
@@ -423,7 +429,6 @@ function generate_maze(width, height)
     maze_holder.exit_pos = exit_pos
 
     return maze_holder
-
 end
 
 function pre_process_maze(maze, width, height)
