@@ -6,6 +6,7 @@ function object_renderer_draw()
     end
     player_draw_health()
     draw_enemies_killed()
+    draw_distance_from_exit()
     if GAME_OVER then
         love.graphics.draw(game_over_screen, 0, 0)
     end
@@ -19,6 +20,21 @@ function draw_enemies_killed()
     x_offset = x_offset + 120
     for dpos=1, #enemies_killed_str do
         local dchar = string.sub(enemies_killed_str, dpos, dpos)
+        local d_texture = digits[tonumber(dchar)+1]
+        love.graphics.draw(d_texture, x_offset + (dpos-1) * DIGIT_SIZE, 0, nil, DIGIT_SIZE/d_texture:getWidth(), DIGIT_SIZE/d_texture:getHeight())
+    end
+end
+
+function draw_distance_from_exit()
+    local x_offset = 1200
+    local exit_dist = math.sqrt((player.pos_x - FLAG_POS_MAP_X)^2 + (player.pos_y - FLAG_POS_MAP_Y)^2)
+    exit_dist = math.floor(exit_dist)
+    local exit_dist_str = tostring(exit_dist)
+    local exit_icon = love.graphics.newImage("resources/textures/6.png")
+    love.graphics.draw(exit_icon, x_offset, 0, nil, EXIT_ICON_SCALE/exit_icon:getWidth(), EXIT_ICON_SCALE/exit_icon:getHeight())
+    x_offset = x_offset + 120
+    for dpos=1, #exit_dist_str do
+        local dchar = string.sub(exit_dist_str, dpos, dpos)
         local d_texture = digits[tonumber(dchar)+1]
         love.graphics.draw(d_texture, x_offset + (dpos-1) * DIGIT_SIZE, 0, nil, DIGIT_SIZE/d_texture:getWidth(), DIGIT_SIZE/d_texture:getHeight())
     end

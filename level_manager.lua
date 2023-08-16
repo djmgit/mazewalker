@@ -1,8 +1,8 @@
 function check_flag_reached()
-    local player_map_x, player_map_y = player_map_pos()
+    local player_map_x, player_map_y = player_pos()
     local flag_pos_map_x, flag_pos_map_y = FLAG_POS_MAP_X, FLAG_POS_MAP_Y
-    if player_map_x == flag_pos_map_x and player_map_y == flag_pos_map_y then
-        flag_taken = true
+    local distance_from_exit = math.sqrt((player_map_x - flag_pos_map_x)^2 + (player_map_y - flag_pos_map_y)^2)
+    if distance_from_exit < 1 then
         print ("player", player_map_x, player_map_y, "flag", flag_pos_map_x, flag_pos_map_y)
         print ("level done")
         transition_level()

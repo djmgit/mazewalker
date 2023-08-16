@@ -47,6 +47,7 @@ function love.load()
     MOUSE_BORDER_LEFT = 100
     MOUSE_BORDER_RIGHT = WINDOW_WIDTH - MOUSE_BORDER_LEFT
     ENEMY_ICON_SCALE = 60
+    EXIT_ICON_SCALE = 60
     level = 1
     flag_taken = false
     mouse_rel_dx = 0
@@ -175,9 +176,9 @@ function love.update(dt)
         sprites_update(dt)
         weapon_update(dt)
         check_flag_reached()
-        print ()
-        local d = math.sqrt((player.pos_x - FLAG_POS_MAP_X)^2 + (player.pos_y - FLAG_POS_MAP_Y)^2)
-        print (d)
+        --print ()
+        --local d = math.sqrt((player.pos_x - FLAG_POS_MAP_X)^2 + (player.pos_y - FLAG_POS_MAP_Y)^2)
+        --print (d)
     end
 end
 
