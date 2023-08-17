@@ -68,7 +68,7 @@ function  draw_background()
 end
 
 function load_wall_textures()
-    for index = 1, 10 do
+    for index = 1, 9 do
         table.insert(wall_textures, love.graphics.newImage('resources/textures/'..index..'.png'))
     end
     sky_texture = love.graphics.newImage('resources/textures/sky.png')

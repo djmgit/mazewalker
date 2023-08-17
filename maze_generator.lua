@@ -420,8 +420,8 @@ function customise_maze(maze, width, height)
     end
 
     do_flood_fill(maze, width, height)
-    maze[entry_door[1]][entry_door[2]] = math.random(6, 10)
-    maze[exit_door[1]][exit_door[2]] = math.random(6, 10)
+    maze[entry_door[1]][entry_door[2]] = math.random(5, 9)
+    maze[exit_door[1]][exit_door[2]] = math.random(5, 9)
 
     local maze_holder = {}
     maze_holder.maze = pre_process_maze(maze, width, height)
