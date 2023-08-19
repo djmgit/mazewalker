@@ -27,9 +27,12 @@ function get_maze(width, height)
     maze.lights = lights
     local candles = place_candles(maze, width, height, occupied)
     maze.candles = candles
-    print ("number of npcs : ", #maze.npcs)
-    print ("number of lights : ", #maze.lights)
-    print ("number of candles : ", #maze.candles)
+
+    -- below commented code is helpful in debugging, lets you know the total number
+    -- of different game objects that are spawned
+    --print ("number of npcs : ", #maze.npcs)
+    --print ("number of lights : ", #maze.lights)
+    --print ("number of candles : ", #maze.candles)
     return maze
 end
 

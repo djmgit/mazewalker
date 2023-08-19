@@ -41,6 +41,14 @@ function draw_distance_from_exit()
 end
 
 function render_game_objects()
+    --[[
+        This function is used for drawing sprites/textures on screen. This is called by love.draw in every iteration.
+        Before drawing we need to sort the objects by their distances from the player. The object farthest from the player
+        should be draws first and the object nearest last.
+        Also every object should be scaled to the correct height and width before drawing. Although this is a known thing
+        still scaling is done using this simple formula:
+        scale = target quantity / original quantity
+    ]]
     table.sort(objects_to_render, function(t1, t2) return t1.depth > t2.depth end)
     for ray, render_object in ipairs(objects_to_render) do
         local wall_pos = render_object.wall_pos

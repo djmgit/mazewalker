@@ -1,3 +1,8 @@
+--[[
+    Module to implement a simple path finding algorith using bfs. This is used by the
+    NPCs to follow the player.
+]]
+
 function gen_pos(x, y)
     local pos = {}
     pos.x = x

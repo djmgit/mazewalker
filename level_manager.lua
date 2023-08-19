@@ -3,14 +3,11 @@ function check_flag_reached()
     local flag_pos_map_x, flag_pos_map_y = FLAG_POS_MAP_X, FLAG_POS_MAP_Y
     local distance_from_exit = math.sqrt((player_map_x - flag_pos_map_x)^2 + (player_map_y - flag_pos_map_y)^2)
     if distance_from_exit < 1 then
-        print ("player", player_map_x, player_map_y, "flag", flag_pos_map_x, flag_pos_map_y)
-        print ("level done")
         transition_level()
     end
 end
 
 function transition_level()
-    print ("level done")
     FLAG_POS_MAP_X = -1
     FLAG_POS_MAP_Y = -1
     remove_all_sprites()
