@@ -1,26 +1,18 @@
 player = {}
-player.pos_x = PLAYER_START_X
-player.pos_y = PLAYER_START_Y
-player.speed = 4
-player.angle = 0
-player.angular_speed = 1
-player.shot = false
-player.health = PLAYER_MAX_HEALTH
-player.hit = false
+
+function init_player()
+    player.pos_x = PLAYER_START_X
+    player.pos_y = PLAYER_START_Y
+    player.angle = 0
+    player.speed = 4
+    player.angular_speed = 1
+    player.health = PLAYER_MAX_HEALTH
+    player.hit = false
+    player.shot = false
+end
 
 function player_pos()
     return player.pos_x, player.pos_y
-end
-
-function check_not_wall(pos_x, pos_y)
-    if map[pos_x] == nil then
-        return true
-    end
-    if map[pos_x][pos_y] == nil then
-        return true
-    end
-    
-    return false
 end
 
 function player_get_damage(damage)

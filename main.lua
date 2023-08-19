@@ -1,4 +1,5 @@
 function love.load()
+    math.randomseed(os.time())
     WINDOW_WIDTH = 1600
     WINDOW_HEIGHT = 900
     MAZE_HEIGHT = 50
@@ -46,6 +47,7 @@ function love.load()
     MOUSE_BORDER_LEFT = 100
     MOUSE_BORDER_RIGHT = WINDOW_WIDTH - MOUSE_BORDER_LEFT
     ENEMY_ICON_SCALE = 60
+    EXIT_ICON_SCALE = 60
     level = 1
     flag_taken = false
     mouse_rel_dx = 0
@@ -75,20 +77,37 @@ function love.load()
     sounds.player_pain = love.audio.newSource("resources/sounds/resources_sound_player_pain.wav", "static")
     love.mouse.setRelativeMode(true)
 
+    require "utils"
     require "maze_generator"
+    require "path_finding"
+    require "weapon"
+    require "object_renderer"
+    load_wall_textures()
+    require "path_finding"
+    require "sprite_objects"
 
     setup_world()
-
-    require "utils"
     require "player"
-    require "weapon"
-    require "path_finding"
-    require "object_renderer"
-    require "path_finding"
+    init_player()
     require "level_manager"
-    load_wall_textures()
+    require "mod"
+
+end
+
+function setup_world()
+    -- fnction to setup the game world including maze and sprites
+    -- this will be called whenever the player reaches the exit door
+    -- to reset the world.
+    maze_holder = get_maze(MAZE_WIDTH, MAZE_HEIGHT)
+    mini_map = maze_holder.maze
+    PLAYER_START_X = maze_holder.entry_pos[2] - 1 + 0.5
+    PLAYER_START_Y = maze_holder.entry_pos[1] - 1 + 0.5
+    FLAG_POS_MAP_X = maze_holder.exit_pos[2] - 1
+    FLAG_POS_MAP_Y = maze_holder.exit_pos[1] - 1
+    tiles = get_tiles()
+    map = get_map()
     graph = get_graph()
-    require "sprite_objects"
+
     for _, candle_pos in ipairs(maze_holder.candles) do
         load_sprite("resources/sprites/static_sprites/candlebra.png", candle_pos[1]-0.5, candle_pos[2]-0.5, 0.7, 0.27, SPRITE_TYPE_STATIC)
     end
@@ -107,24 +126,13 @@ function love.load()
                     "resources/sprites/npc/"..npc_type.."/walk")
     end
     load_weapon("resources/sprites/weapon/shotgun", 0.4, 0.15)
-    require "mod"
-
-end
-
-function setup_world()
-    maze_holder = get_maze(MAZE_WIDTH, MAZE_HEIGHT)
-    mini_map = maze_holder.maze
-    PLAYER_START_X = maze_holder.entry_pos[2] - 1 + 0.5
-    PLAYER_START_Y = maze_holder.entry_pos[1] - 1 + 0.5
-    FLAG_POS_MAP_X = maze_holder.exit_pos[2] - 1
-    FLAG_POS_MAP_Y = maze_holder.exit_pos[1] - 1
-    tiles = get_tiles()
-    map = get_map()
 end
 
 
 
 function get_map()
+    -- map will only store positions of the blocks/walls in the maze
+    -- this will help us to quickly lookup free and blokced cells.
     local map = {}
     for _, tile in ipairs(tiles) do
         if map[tile.x] == nil then
@@ -137,6 +145,9 @@ function get_map()
 end
 
 function get_tiles()
+    -- this function will create a table of tile object. Each
+    -- tile object will store the all type and the x and y position of
+    -- the tle.
     local tiles = {}
     for row_index, row in ipairs(mini_map) do
         for column_index, elem in ipairs(row) do
@@ -167,6 +178,7 @@ function love.mousepressed(x, y, button, istouch, presses)
 end
 
 function love.update(dt)
+    -- love function to to update the game objects
     if not GAME_OVER then
         player_update(dt)
         ray_casting_update()
@@ -177,10 +189,13 @@ function love.update(dt)
 end
 
 function love.draw()
+    -- render everything on screen
     object_renderer_draw()
     if not GAME_OVER then
        weapon_draw()
     end
+
+    -- below lines are helpful for debugging. It allows to see the world in 2D mode.
     --love.graphics.setColor(0, 0, 1)
     --for _, tile in ipairs(tiles) do
         --love.graphics.rectangle("line", tile.x*WINDOW_SCALE, tile.y*WINDOW_SCALE, 100, 100)

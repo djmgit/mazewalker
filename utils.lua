@@ -16,3 +16,14 @@ function get_images_from_paths(image_paths)
     end
     return images
 end
+
+function check_not_wall(pos_x, pos_y)
+    if map[pos_x] == nil then
+        return true
+    end
+    if map[pos_x][pos_y] == nil then
+        return true
+    end
+    
+    return false
+end

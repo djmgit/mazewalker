@@ -1,3 +1,13 @@
+--[[
+    This module is used for generating our maze. We also perform some checks to
+    make sure the maze is a decent one that is a good ration of walls to free cells and
+    we can create a entry and exit door.
+    The algorithm used to generate the maze is randomised prim's algorithm. Once the maze
+    is generated, we give different wall different texture to make the wall look better.
+    For that we use flood fill algorithm.
+    Please see the README for references.
+]]
+
 wall = 'w'
 cell = 'c'
 unvisited = "u"
@@ -6,7 +16,8 @@ flag = "f"
 door = "d"
 
 function get_maze(width, height)
-    local maze = __get_maze(width, height)
+    local maze_raw = __get_maze(width, height)
+    local maze = customise_maze(maze_raw, width, height)
     local occupied = {}
     occupied[pos_to_key(maze.entry_pos[1], maze.entry_pos[2])] = 1
     occupied[pos_to_key(maze.exit_pos[1], maze.exit_pos[2])] = 1
@@ -16,9 +27,12 @@ function get_maze(width, height)
     maze.lights = lights
     local candles = place_candles(maze, width, height, occupied)
     maze.candles = candles
-    print ("number of npcs : ", #maze.npcs)
-    print ("number of lights : ", #maze.lights)
-    print ("number of candles : ", #maze.candles)
+
+    -- below commented code is helpful in debugging, lets you know the total number
+    -- of different game objects that are spawned
+    --print ("number of npcs : ", #maze.npcs)
+    --print ("number of lights : ", #maze.lights)
+    --print ("number of candles : ", #maze.candles)
     return maze
 end
 
@@ -26,13 +40,11 @@ function __get_maze(width, height)
     local maze = nil
     for i=1, 20 do
         maze = generate_maze(width, height)
-        if check_maze(maze.maze, width, height) then
-            print_maze(maze.maze, width, height)
+        if check_maze(maze, width, height) then
             return maze
         end
     end
 
-    print_maze(maze.maze, width, height)
     return maze
 end
 
@@ -164,7 +176,7 @@ function check_maze(maze, width, height)
     local free_cells = 0
     for i=1, height do
         for j=1, width do
-            if maze[i][j] == 0 then
+            if maze[i][j] == cell then
                 free_cells = free_cells + 1
             end
         end
@@ -174,6 +186,26 @@ function check_maze(maze, width, height)
     if free_ratio < 0.6 then
         return false
     end
+    local entry_door = {}
+    local exit_door = {}
+    for i=1, width do
+        if maze[2][i] == cell then
+            entry_door = {1, i}
+            break
+        end
+    end
+
+    for i=width, 1, -1 do
+        if maze[height-1][i] == cell then
+            exit_door = {height, i}
+            break
+        end
+    end
+
+    if (#entry_door == 0) or (#exit_door == 0) then
+        return false
+    end
+
     return true
 end
 
@@ -362,6 +394,21 @@ function generate_maze(width, height)
         end
     end
 
+    for i=1, height do
+        maze[i][1] = wall
+        maze[i][width] = wall
+    end
+
+    for i=1, width do
+        maze[1][i] = wall
+        maze[height][i] = wall
+    end
+
+    return maze
+
+end
+
+function customise_maze(maze, width, height)
     local entry_pos = {}
     local exit_pos = {}
     local entry_door = {}
@@ -385,19 +432,9 @@ function generate_maze(width, height)
         end
     end
 
-    for i=1, height do
-        maze[i][1] = wall
-        maze[i][width] = wall
-    end
-
-    for i=1, width do
-        maze[1][i] = wall
-        maze[height][i] = wall
-    end
-
     do_flood_fill(maze, width, height)
-    maze[entry_door[1]][entry_door[2]] = 5
-    maze[exit_door[1]][exit_door[2]] = 5
+    maze[entry_door[1]][entry_door[2]] = math.random(5, 9)
+    maze[exit_door[1]][exit_door[2]] = math.random(5, 9)
 
     local maze_holder = {}
     maze_holder.maze = pre_process_maze(maze, width, height)
@@ -405,7 +442,6 @@ function generate_maze(width, height)
     maze_holder.exit_pos = exit_pos
 
     return maze_holder
-
 end
 
 function pre_process_maze(maze, width, height)
@@ -438,7 +474,6 @@ function flood_fill(maze, width, height, start_pos, wall_type)
     table.insert(queue, start_pos)
 
     while #queue ~= 0 do
-        --print (#queue)
         local pos = table.remove(queue, 1)
         if maze[pos[1]][pos[2]] == wall then
             maze[pos[1]][pos[2]] = wall_type

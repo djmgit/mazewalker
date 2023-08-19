@@ -1,3 +1,8 @@
+--[[
+    Module to implement a simple path finding algorith using bfs. This is used by the
+    NPCs to follow the player.
+]]
+
 function gen_pos(x, y)
     local pos = {}
     pos.x = x
@@ -13,7 +18,7 @@ function show()
     pos.y = 2
     for _, dir in ipairs(directions) do
         new_pos = add_dir(pos, dir, true)
-        if check_allowed(new_pos.x, new_pos.y) then
+        if check_not_wall(new_pos.x, new_pos.y) then
             table.insert(positions, new_pos)
         end
     end
@@ -28,17 +33,6 @@ table.insert(directions, {["x"]=-1, ["y"]=-1})
 table.insert(directions, {["x"]=1, ["y"]=-1})
 table.insert(directions, {["x"]=1, ["y"]=1})
 table.insert(directions, {["x"]=-1, ["y"]=1})
-
-function check_allowed(pos_x, pos_y)
-    if map[pos_x] == nil then
-        return true
-    end
-    if map[pos_x][pos_y] == nil then
-        return true
-    end
-    
-    return false
-end
 
 function check_no_npc(pos_x, pos_y)
     if npc_positions[pos_x] == nil then
@@ -124,7 +118,7 @@ function get_rechable_positions(x, y)
     local new_pos = {}
     for _, dir in ipairs(directions) do
         new_pos = add_dir(pos, dir)
-        if check_allowed(new_pos.x, new_pos.y) then
+        if check_not_wall(new_pos.x, new_pos.y) then
             table.insert(positions, new_pos)
         end
     end

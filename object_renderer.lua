@@ -6,6 +6,7 @@ function object_renderer_draw()
     end
     player_draw_health()
     draw_enemies_killed()
+    draw_distance_from_exit()
     if GAME_OVER then
         love.graphics.draw(game_over_screen, 0, 0)
     end
@@ -24,7 +25,30 @@ function draw_enemies_killed()
     end
 end
 
+function draw_distance_from_exit()
+    local x_offset = 1200
+    local exit_dist = math.sqrt((player.pos_x - FLAG_POS_MAP_X)^2 + (player.pos_y - FLAG_POS_MAP_Y)^2)
+    exit_dist = math.floor(exit_dist)
+    local exit_dist_str = tostring(exit_dist)
+    local exit_icon = love.graphics.newImage("resources/textures/6.png")
+    love.graphics.draw(exit_icon, x_offset, 0, nil, EXIT_ICON_SCALE/exit_icon:getWidth(), EXIT_ICON_SCALE/exit_icon:getHeight())
+    x_offset = x_offset + 120
+    for dpos=1, #exit_dist_str do
+        local dchar = string.sub(exit_dist_str, dpos, dpos)
+        local d_texture = digits[tonumber(dchar)+1]
+        love.graphics.draw(d_texture, x_offset + (dpos-1) * DIGIT_SIZE, 0, nil, DIGIT_SIZE/d_texture:getWidth(), DIGIT_SIZE/d_texture:getHeight())
+    end
+end
+
 function render_game_objects()
+    --[[
+        This function is used for drawing sprites/textures on screen. This is called by love.draw in every iteration.
+        Before drawing we need to sort the objects by their distances from the player. The object farthest from the player
+        should be draws first and the object nearest last.
+        Also every object should be scaled to the correct height and width before drawing. Although this is a known thing
+        still scaling is done using this simple formula:
+        scale = target quantity / original quantity
+    ]]
     table.sort(objects_to_render, function(t1, t2) return t1.depth > t2.depth end)
     for ray, render_object in ipairs(objects_to_render) do
         local wall_pos = render_object.wall_pos
@@ -52,11 +76,9 @@ function  draw_background()
 end
 
 function load_wall_textures()
-    table.insert(wall_textures, love.graphics.newImage('resources/textures/1.png'))
-    table.insert(wall_textures, love.graphics.newImage('resources/textures/2.png'))
-    table.insert(wall_textures, love.graphics.newImage('resources/textures/3.png'))
-    table.insert(wall_textures, love.graphics.newImage('resources/textures/4.png'))
-    table.insert(wall_textures, love.graphics.newImage('resources/textures/5.png'))
+    for index = 1, 9 do
+        table.insert(wall_textures, love.graphics.newImage('resources/textures/'..index..'.png'))
+    end
     sky_texture = love.graphics.newImage('resources/textures/sky.png')
     blood_screen = love.graphics.newImage('resources/textures/blood_screen.png')
     for item=0, 10 do
