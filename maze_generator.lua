@@ -1,3 +1,13 @@
+--[[
+    This module is used for generating our maze. We also perform some checks to
+    make sure the maze is a decent one that is a good ration of walls to free cells and
+    we can create a entry and exit door.
+    The algorithm used to generate the maze is randomised prim's algorithm. Once the maze
+    is generated, we give different wall different texture to make the wall look better.
+    For that we use flood fill algorithm.
+    Please see the README for references.
+]]
+
 wall = 'w'
 cell = 'c'
 unvisited = "u"

@@ -183,6 +183,7 @@ function ray_cast()
     --   such that the strip spans equally to either side of the middle of the screen. The remaining vertical space above the middle of the screen will be the sky and below
     --   the middle of the screen and below the bottom portion of the wall will be the floor.
 
+    -- * Thats pretty much the crux of ray casting.
     
 
     local ox, oy  = player_pos()
