@@ -100,8 +100,90 @@ function ray_cast()
                                                     |  w |    |
                                                 ----------------------
          Lets say we are talking about a grid like the above, every wall (w represents wall) has two vertical surfaces and two
-         horizontal surfaces. Now a ray can hit only one vertical surface or one horizontal surface.
+         horizontal surfaces. Now a ray can hit only one vertical surface or one horizontal surface. Lets consider one such wall.
+         Please note all cells are squares, that is equal height and width.
+         First case:
+                                              |---------|---------------------
+                                              |         |        |         |
+                                              |         |       /|         |
+                                              |         |      / |   w     |
+                                              |         |     /  |         |
+                                             -------------------------------
+                                              |         |   /    |
+                                              |         |  /     |
+                                              |         | O      |        
+                                              |         |        |
+                                            ----------------------
+        In this case the ray hits the left verical surface of the wall.
+        Note that once we have found out the distance travelled by the ray until it hits the first vertical grid line(which is doable using
+        ray angle and the width of the square and the position of the player), for further distances between two vertical grid lines
+        the distance travelled along the X direction remains constant and equal to the width of the square cells. The distance travelled
+        along Y axis can be found out using the ray angle and the X distance.
+        2nd case:
+                                              |---------|---------------------
+                                              |         |        |         |
+                                              |         |        |         |
+                                              |         |        |   w     |
+                                              |         |        |         |
+                                             -------------------------------
+                                              |         |        | /
+                                              |         |        |/
+                                              |         |       /|        
+                                              |         |      / |
+                                            ----------------------
+                                              |         |    /   |        
+                                              |         |   /    |
+                                              |         |  O     |
+                                              |         |        |
+                                            -----------------------------------
+        This is pretty much the reverse of the first case. After the first horizontal grid line crossing, the distance of the ray travelled in Y directing
+        between every two horizontal grid lines is constant and equal to width of a square cell. The X distance can be found out using the ray angle and
+        the Y distance.
+
+        After we carried out the above two excercies, we will have the total distances travelled by the ray until it hits the first horizontal surface of a wall
+        or the first vertical surface of the wall. We need to get the shortest of both the distances. We will do some more tweaking to also get the particular wall
+        texture number that we want to draw.
     ]]
+    -- * Once we have the distance travelled by the ray to the wall, we will take the cosine component of the ray to avoid something known as the fishbowl effect.
+    --   If we dont do this then as the name suggest all our walls will appear bent at the boundaries and the entire world will look like a fish bowl. You can test
+    --   by not taking the cos component, you will get a rather trippy effect.
+
+    -- * Next comes the second interesting part, finding out the projection height of the wall strips. And to find out this we will use good old traingle similarity
+    --   and more importantly, lots of imagination. So now we have the distnce from the player to the wall surface, we know the screen distance, which is distance from
+    --   from the player to the virtal screen. So lets now consider the projection of the 2D wall on our screen:
+    --[[                                     I
+                                             *
+                                             |        *
+                                             |                *        A
+                                             |                         *
+                                             |                         |       *        
+                                             |                         |               *
+                                            M|                         |N                      *
+                                             |-------------------------|-------------------------------* O
+                                             |                         |                       *
+                                             |                         |               *
+                                             |                         |       *
+                                             |                         *B
+                                             |                *
+                                             |        *
+                                             *
+                                             J             
+    
+        Okay, now lets consider the above poorly drawn diagram, O is the localtion of the player/camera. ON is the screen distance. OM is the distance of the
+        wall from the player, the one we found out using ray casting. Now we need our imagination to understand that the screen is kind of perpendicular in this
+        diagram with respect to the monitor screen. AB is not the screen but the height of the projection of the wall/object. And IJ is the actual height of the
+        wall or the true height. Now traingle OAB and triangle OIJ are similar, becausle angle IOJ  is common and angle OAB and angle PIJ are equal.
+
+        So by similar triangle proeprly, ON/OM = AB/IJ or AB = ON*IJ / OM. By setting IJ to 1, AB = ON/OM. In other words,
+        project height = screen distance / cosine component of ray distance. Setting IJ to 1 might seem weird but I believe it works because we are interested in
+        the relative projection height of the wall strips and not the absolute height.
+    ]]
+    -- * Now that we have the projection height, the next steps are relatively simple, we need to find out the texture offset so we can create a wall strip and draw
+    --   on the screen. The X position of the strip will be determined by the ray number and the scale (remember we are using less number of rays) and Y will be adjusted
+    --   such that the strip spans equally to either side of the middle of the screen. The remaining vertical space above the middle of the screen will be the sky and below
+    --   the middle of the screen and below the bottom portion of the wall will be the floor.
+
+    
 
     local ox, oy  = player_pos()
     local x_map, y_map = player_map_pos()
