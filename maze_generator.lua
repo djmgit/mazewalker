@@ -164,8 +164,6 @@ function can_place_npc(maze, pos, width, height, occupied)
        and  occupied[pos_to_key(pos[1], pos[2]+1)] == nil and occupied[pos_to_key(pos[1], pos[2]-1)] == nil
        and occupied[pos_to_key(pos[1]-1, pos[2])] == nil and occupied[pos_to_key(pos[1]+1, pos[2])] == nil
        and math.random(1, 10) < 2 then
-       --and maze[pos[1]-1][pos[2]-1] == 0 and maze[pos[1]-1][pos[2]+1] == 0
-       --and maze[pos[1]+1][pos[2]-1] == 0 and maze[pos[1]+1][pos[2]+1] == 0 then
         return true
     end
     return false
