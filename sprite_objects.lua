@@ -29,8 +29,8 @@ function load_sprite(path, pos_x, pos_y, scale, shift, sprite_type, animation_ti
         sprite.speed = 1.8
         sprite.size = 10
         sprite.health = 100
-        sprite.attack_damage = 10
-        sprite.accuracy = 0
+        sprite.attack_damage = 1
+        sprite.accuracy = 0.01
         sprite.alive = true
         sprite.pain = false
         sprite.ray_cast_value = false

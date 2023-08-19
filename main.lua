@@ -95,6 +95,9 @@ function love.load()
 end
 
 function setup_world()
+    -- fnction to setup the game world including maze and sprites
+    -- this will be called whenever the player reaches the exit door
+    -- to reset the world.
     maze_holder = get_maze(MAZE_WIDTH, MAZE_HEIGHT)
     mini_map = maze_holder.maze
     PLAYER_START_X = maze_holder.entry_pos[2] - 1 + 0.5
@@ -128,6 +131,8 @@ end
 
 
 function get_map()
+    -- map will only store positions of the blocks/walls in the maze
+    -- this will help us to quickly lookup free and blokced cells.
     local map = {}
     for _, tile in ipairs(tiles) do
         if map[tile.x] == nil then
@@ -140,6 +145,9 @@ function get_map()
 end
 
 function get_tiles()
+    -- this function will create a table of tile object. Each
+    -- tile object will store the all type and the x and y position of
+    -- the tle.
     local tiles = {}
     for row_index, row in ipairs(mini_map) do
         for column_index, elem in ipairs(row) do
@@ -170,23 +178,24 @@ function love.mousepressed(x, y, button, istouch, presses)
 end
 
 function love.update(dt)
+    -- love function to to update the game objects
     if not GAME_OVER then
         player_update(dt)
         ray_casting_update()
         sprites_update(dt)
         weapon_update(dt)
         check_flag_reached()
-        --print ()
-        --local d = math.sqrt((player.pos_x - FLAG_POS_MAP_X)^2 + (player.pos_y - FLAG_POS_MAP_Y)^2)
-        --print (d)
     end
 end
 
 function love.draw()
+    -- render everything on screen
     object_renderer_draw()
     if not GAME_OVER then
        weapon_draw()
     end
+
+    -- below lines are helpful for debugging. It allows to see the world in 2D mode.
     --love.graphics.setColor(0, 0, 1)
     --for _, tile in ipairs(tiles) do
         --love.graphics.rectangle("line", tile.x*WINDOW_SCALE, tile.y*WINDOW_SCALE, 100, 100)
