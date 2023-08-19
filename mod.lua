@@ -1,3 +1,10 @@
+-- this module is responsible for performing ray casting and coming up with the positions of the objects to
+-- render. This was an attempt to understand ray casting first hand. It is indeed an amazing technology
+-- which invlolves brilliant use of trigonometry and geometry in general.
+
+-- I have skimmed through lots of online resources to understand the process/alogrithm. Do check the
+-- README.md for all the references.
+
 function ray_casting_update()
     ray_cast()
     get_objects_to_render()
@@ -45,6 +52,57 @@ function get_objects_to_render()
 end
 
 function ray_cast()
+    -- Though you might see lots of articles online mentioning that raycasting is the simplest
+    -- special case scenario of raytracing, and it might in deed be easy to understand the process
+    -- but not so trivial when it comes to actually implementing it.
+    -- Since lots of people have already tried explaining the process online, I wont dive into the process
+    -- rather I will give an overview of what ray tracing is.
+
+    -- * Its a process of project 2D object into 3D or rather create an illusion of 3D using 2D sprites.
+    --   That is the reason raycasting is not considered pure 3D rendering, rather its a pseudo 3D rendering
+    --   procees.
+    -- * First you start with a map or rather a grid, where some cells/blocks are empty and some are non-empty.
+    --   The non empty ones are walls of our maze.
+    -- * Next we need to decide the field of view of our player. Field of view is nothing but an angle. The part
+    --   of the world that falls within this angle is what our player (or the camera, or we) see and we only render
+    --   that much on our screen. Usually pi/3 or 60 degree is a good choice for field of view.
+    -- * Next we need to decide at what distance from the camera or the player is the screen located where the objects
+    --   will be rendered. 
+    --[[                                        A           N          B
+                                                 ----------------------- this is the screen
+                                                  \         |         /
+                                                   \        |        /
+                                                    \       |       /
+                                                     \      |      /
+                                                      \     |     /
+                                                       \    |    /
+                                                        \   |   /
+                                                         \  |  /
+                                                          \ | /
+                                                           \|/
+                                                            O
+    ]]
+    --   If O is our player and AB is the screen then ON is the screen distance and angle AOB is the field of view and angle NOB is
+    --   half of the field of view. Now its clear that AB is nothing but our screen width, that is width of our game window or viewport
+    --   whose value we know. And angle NOB is also known. Now tan NOB is NB/ON and hece screen distane or ON is half of screen width
+    --   divided by tan of half field of view of FOV.
+    --   Hence we have screen dist is half screen width / tan fov/2
+    -- * Now comes the interesting part, for every angle within the FOV we cast a ray into the world and try to find the position of the
+    --   wall where it hits first and comes to a stop. Now sending a ray for every angle might not be great from the performance side of
+    --   the things so we send FOV/2 number of rays and scale whatever we draw accordingly.
+    -- * This part I will explain is short and would request to look into the code for details. Now we need to find where does the ray collide
+    --   with a wall. There can be two cases, collision with a vertiical surface of a wall or horizontal surface of the wal.
+    --[[
+
+                                                ----------------------
+                                                    |    |  w |
+                                                ----------------------
+                                                    |  w |    |
+                                                ----------------------
+         Lets say we are talking about a grid like the above, every wall (w represents wall) has two vertical surfaces and two
+         horizontal surfaces. Now a ray can hit only one vertical surface or one horizontal surface.
+    ]]
+
     local ox, oy  = player_pos()
     local x_map, y_map = player_map_pos()
 
