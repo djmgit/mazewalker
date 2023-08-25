@@ -35,3 +35,15 @@ The idea was not really to create a game but to explore raycasting hands on. Als
 means perfect, on the contrary I would say its kind of messy and has some bugs. So if anyone is
 interested to take a dig at the code and want to play around with lua and love, PRs are always
 welcome.
+
+## References:
+
+### raycasting tutorials/articles
+
+- https://lodev.org/cgtutor/raycasting.html
+- https://github.com/vinibiavatti1/RayCastingTutorial
+- https://www.youtube.com/watch?v=ECqUrT7IdqQ&t=1233s&pp=ygUUcmF5Y2FzdGluZyB0dXRvcmlhbCA%3D
+
+### sprites and textures used:
+
+- https://opengameart.org/
