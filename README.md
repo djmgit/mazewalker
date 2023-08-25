@@ -18,6 +18,16 @@ I will not dig deep into the technique here because there are numerous articles/
 videos on the internet which explains this technique in great detail. I have tried to give an
 overview of the technique <a href="https://github.com/djmgit/mazewalker/blob/master/mod.lua">here</a>
 
+## How to run
+
+Make sure you have installed lua (5.4.3 preferred) and <a href="https://love2d.org/#download">love2d</a> on your system.
+
+After that, open this repository in your terminal and run
+```
+/path/to/love ./
+```
+If you have placed love2d in your system path then you dont need
+to mention the full path.
 ## What all I have used
 
 I have used lua to create this game and the awesome lua based love2d library to render graphics on
@@ -27,7 +37,6 @@ to use and learn.
 As I have already mentioned, to generate the mazes I have used Prim's randomized algorithm. And to
 make sure wall's get different textures, I have used flood fill algorithm to assign different textures
 to different clusters of walls.
-
 
 ## NOTE
 
