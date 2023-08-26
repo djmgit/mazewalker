@@ -9,7 +9,7 @@ into a newly generated maze. So in a way you can play this game or run this expe
 
 Once the maze is generated, we apply raycasting to convert the 2D maze into a pseudo 3D world.
 
-<video src='doc_assets/mazewalker_comp.mp4'>
+<video src="doc_assets/mazewalker_comp.mp4"/>
 
 ## What is raycasting
 
