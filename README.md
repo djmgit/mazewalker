@@ -9,6 +9,12 @@ into a newly generated maze. So in a way you can play this game or run this expe
 
 Once the maze is generated, we apply raycasting to convert the 2D maze into a pseudo 3D world.
 
+
+
+https://github.com/djmgit/mazewalker/assets/16368427/edb81e02-6f90-4697-a4ee-769fd270610b
+
+
+
 ## What is raycasting
 
 Raycasting is one of the first 3D techniques that pushed the boundaries of 3D games. One of the very
@@ -67,6 +73,3 @@ welcome.
 ### sprites and textures used:
 
 - https://opengameart.org/
-
-
-https://raw.githubusercontent.com/djmgit/mazewalker/master/doc_assets/github_short.mp4
