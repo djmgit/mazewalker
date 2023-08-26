@@ -28,6 +28,17 @@ After that, open this repository in your terminal and run
 ```
 If you have placed love2d in your system path then you dont need
 to mention the full path.
+
+## Controls
+
+```
+w                       -       move forward
+s                       -       move backward
+a                       -       move left
+d                       -       move right
+left mouse button       -       Fire
+move mouse              -       Chnage player/camera direction
+```
 ## What all I have used
 
 I have used lua to create this game and the awesome lua based love2d library to render graphics on
