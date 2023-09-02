@@ -72,4 +72,4 @@ welcome.
 
 ### sprites and textures used:
 
-- [https://opengameart.org/](https://spritedatabase.net/game/760)https://spritedatabase.net/game/760
+- https://spritedatabase.net/game/760
