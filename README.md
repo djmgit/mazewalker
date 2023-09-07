@@ -43,7 +43,7 @@ s                       -       move backward
 a                       -       move left
 d                       -       move right
 left mouse button       -       Fire
-move mouse              -       Chnage player/camera direction
+move mouse              -       Change player/camera direction
 ```
 ## What all I have used
 
